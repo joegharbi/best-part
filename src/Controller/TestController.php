@@ -12,7 +12,7 @@ class TestController
 
     /**
      *
-     * @Route("/index",name="index", methods={"GET", "POST"},host="localhost",
+     * @Route("/,name="index", methods={"GET", "POST"},host="localhost",
      * schemes={"http",https"})
      */
 
