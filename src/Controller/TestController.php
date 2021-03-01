@@ -2,34 +2,29 @@
 
 namespace App\Controller;
 
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TestController
 {
-
     /**
      *
-     * @Route("/,name="index", methods={"GET", "POST"},host="localhost",
-     * schemes={"http",https"})
+     * @Route("/",name="index",schemes={"https","http"})
+     *
      */
-
     public function index()
     {
-        dd("Test index");
+        dd("Test Index");
     }
 
     /**
-     *
-     * @Route("/test/{age<\d+>?0},name="test", methods={"GET", "POST"},host="localhost",
-     * schemes={"http",https"})
+     * @Route("/test/{age<\d+>?0}",name="age",schemes={"https","http"})
      */
-
-    public function test(Request $request, $age)
+    public function test($age)
     {
-        return dd($request);
-        return dd("Vous avez $age ans!");
+        return new Response("Vous avez $age ans!");
     }
+
+
 }
