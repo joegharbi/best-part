@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    Edit {{ product.name }}
+{% endblock %}
+{% block body %}
+    <h1>Edit {{ product.name }}</h1>
+    {{ form_start(formView, {'attr':{'novalidate':'novalidate'}} )}}
+    {{ form_errors(formView) }}
+    <div class="row">
+        <div class="col">
+            {{ form_row(formView.name) }}
+            {{ form_row(formView.price) }}
+        </div>
+        <div class="col">
+            {{ form_row(formView.mainPicture) }}
+            {{ form_row(formView.shortDescription) }}
+            {{ form_row(formView.category) }}
+        </div>
+    </div>
+
+    <button class="submit btn btn-primary">
+        <i class="fas fa-save">
+            Add product
+        </i>
+    </button>
+
+{% endblock %}
+

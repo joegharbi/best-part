@@ -2,11 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
+use App\Form\ProductType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProductController extends AbstractController
 {
@@ -34,15 +41,67 @@ class ProductController extends AbstractController
     {
 //        $category = $categoryRepository->findOneBy(['slug' => $category_slug]);
 //        $product = $productRepository->findOneBy(['category' => $category, 'slug' => $slug]);
-        $product=$productRepository->findOneBy(['slug'=>$slug]);
+
+        $product = $productRepository->findOneBy(['slug' => $slug]);
         if (!$product) {
             $this->createNotFoundException("the product you're searching for does not exist");
         }
 
         return $this->render('product/show.html.twig', [
             'product' => $product
-//            'category'=>$category
         ]);
 
+    }
+
+    /**
+     * @Route ("/admin/product/{id}/edit" , name="product_edit")
+     */
+    public function edit($id, ProductRepository $productRepository, Request $request, EntityManagerInterface $entityManager)
+    {
+        $product = $productRepository->find($id);
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+           return $this->redirectToRoute('product_show',[
+               'category_slug'=>$product->getCategory()->getSlug(),
+               'slug'=>$product->getSlug()
+
+           ]);
+//            return $this->render('product/show.html.twig', [
+//                'product'=>$product]);
+        }
+        $formView = $form->createView();
+
+        return $this->render('product/edit.html.twig',
+            ['product' => $product,
+                'formView' => $formView]);
+    }
+
+    /**
+     * @Route("/admin/product/create", name="product_create")
+     */
+    public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager)
+    {
+        $product = new Product;
+        $form = $this->createForm(ProductType::class, $product);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $product->setSlug(strtolower($slugger->slug($product->getName())));
+            $entityManager->persist($product);
+            $entityManager->flush();
+            return $this->render('product/show.html.twig', [
+                'product'=>$product
+            ]);
+        }
+
+        $formView = $form->createView();
+
+
+        return $this->render('product/create.html.twig', ['formView' => $formView]);
     }
 }
