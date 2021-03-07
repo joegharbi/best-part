@@ -7,6 +7,7 @@ use App\Form\ProductType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -14,6 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+
+
 
 class ProductController extends AbstractController
 {
@@ -55,9 +58,11 @@ class ProductController extends AbstractController
 
     /**
      * @Route ("/admin/product/{id}/edit" , name="product_edit")
+     * @IsGranted("ROLE_ADMIN",message="You are not allowed to edit a product")
      */
     public function edit($id, ProductRepository $productRepository, Request $request, EntityManagerInterface $entityManager)
     {
+
         $product = $productRepository->find($id);
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
@@ -81,6 +86,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/admin/product/create", name="product_create")
+     * @IsGranted("ROLE_ADMIN",message="You are not allowed to create a product")
      */
     public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager)
     {
