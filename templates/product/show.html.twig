@@ -3,6 +3,7 @@
     Product: {{ product.name }}
 {% endblock %}
 {% block body %}
+
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Home</a></li>
         <li class="breadcrumb-item"><a href="{{ path('product_category',{'slug':product.category.slug}) }}">{{ product.category.name }}</a></li>
@@ -20,7 +21,7 @@
             <p>
                 {{ product.shortDescription }}
             </p>
-            <a href="#" class="btn btn-success btn-lg">
+            <a href="{{ path('cart_add',{'id':product.id}) }}" class="btn btn-success btn-lg">
                 <i class="fas fa-shopping-cart"></i>
                 Add to Cart
             </a>
