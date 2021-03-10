@@ -2,6 +2,7 @@
 
 namespace App\Cart;
 
+use App\Entity\Purchase;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -23,11 +24,15 @@ class CartService
         $this->session = $session;
         $this->productRepository = $productRepository;
     }
-    protected function getCart():array{
-        return $this->session->get('cart',[]);
+
+    protected function getCart(): array
+    {
+        return $this->session->get('cart', []);
     }
-    protected function saveCart(array $cart){
-        $this->session->set('cart',$cart);
+
+    protected function saveCart(array $cart)
+    {
+        $this->session->set('cart', $cart);
     }
 
     public function add(int $id)
@@ -35,9 +40,9 @@ class CartService
         $cart = $this->getCart();
 
         if (!array_key_exists($id, $cart)) {
-            $cart[$id]=0;
+            $cart[$id] = 0;
         }
-            $cart[$id]++;
+        $cart[$id]++;
 
 
         $this->saveCart($cart);
@@ -60,6 +65,9 @@ class CartService
         return $total;
     }
 
+    /**
+     * @return CartItem[]
+     */
     public function getDetailedCartItems(): array
     {
         $detailedCart = [];
@@ -88,17 +96,20 @@ class CartService
 
     public function decrement($id)
     {
-        $cart=$this->getCart();
-        if (!array_key_exists($id,$cart)){
+        $cart = $this->getCart();
+        if (!array_key_exists($id, $cart)) {
             return;
         }
-        if($cart[$id]===1){
+        if ($cart[$id] === 1) {
             $this->remove($id);
             return;
         }
 
         $cart[$id]--;
         $this->saveCart($cart);
+    }
+    public function empty(){
+        $this->saveCart([]);
     }
 
 }

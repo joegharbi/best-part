@@ -3,15 +3,15 @@
 {% block title %}Your cart{% endblock %}
 
 {% block body %}
-<h1>
-    Your cart:
-</h1>
+    <h1>
+        Your cart:
+    </h1>
 
-    {% if items | length > 0  %}
-        
+    {% if items | length > 0 %}
 
-    <table class="table">
-        <thead>
+
+        <table class="table">
+            <thead>
             <tr>
                 <th>Product</th>
                 <th>Price</th>
@@ -19,14 +19,15 @@
                 <th>Total</th>
                 <th></th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             {% for item in items %}
                 <tr>
                     <td>{{ item.product.name }}</td>
                     <td>{{ item.product.price }}</td>
                     <td>
-                        <a href="{{ path("cart_add",{'id':item.product.id}) }}?returnToCart=true" class="btn-sm btn-primary">
+                        <a href="{{ path("cart_add",{'id':item.product.id}) }}?returnToCart=true"
+                           class="btn-sm btn-primary">
                             <i class="fas fa-plus"></i>
                         </a>
                         {{ item.qty }}
@@ -42,16 +43,29 @@
                 </tr>
             {% endfor %}
             <tfoot>
-                <tr>
-                    <td colspan="3">
-                        Total :
-                    </td>
-                    <td colspan="2">{{ total }}</td>
-                </tr>
+            <tr>
+                <td colspan="3">
+                    Total :
+                </td>
+                <td colspan="2">{{ total }}</td>
+            </tr>
             </tfoot>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+        <hr>
+        {% if app.user %}
+            <h2>Confirm your purchase by filling this form</h2>
+            {{ form_start(confirmationForm,{'action':path('purchase_confirm')}) }}
+
+            {{ form_widget(confirmationForm) }}
+            <button type="submit" class="btn btn-success">Confirm</button>
+            {{ form_end(confirmationForm) }}
         {% else %}
+            <h2>You need to be logged in to confirm your purchase</h2>
+            <a href="{{ path('security_login') }}" class="btn btn-success">Login</a>
+            or <a href="#">Create an account</a>
+        {% endif %}
+    {% else %}
         <h2>Empty cart</h2>
     {% endif %}
 {% endblock %}

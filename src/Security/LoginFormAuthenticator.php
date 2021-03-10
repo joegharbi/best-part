@@ -17,28 +17,24 @@ class LoginFormAuthenticator extends AbstractGuardAuthenticator
 {
     protected $encoder;
 
+
     public function __construct(UserPasswordEncoderInterface $encoder)
     {
         $this->encoder = $encoder;
     }
 
+
     public function supports(Request $request)
     {
         return $request->attributes->get('_route') === 'security_login' &&
             $request->isMethod('POST');
-
     }
 
     public function getCredentials(Request $request)
     {
-//        return $request->request->get('login');
-
-
-
-
         return $request->request->get('login');
-
     }
+
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
@@ -50,6 +46,7 @@ class LoginFormAuthenticator extends AbstractGuardAuthenticator
 
     }
 
+
     public function checkCredentials($credentials, UserInterface $user)
     {
         $isValid = $this->encoder->isPasswordValid($user, $credentials['password']);
@@ -60,6 +57,7 @@ class LoginFormAuthenticator extends AbstractGuardAuthenticator
         return true;
     }
 
+
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         $request->attributes->set(Security::LAST_USERNAME, $request->request->get('login')['email']);
@@ -67,15 +65,18 @@ class LoginFormAuthenticator extends AbstractGuardAuthenticator
 
     }
 
+
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
         return new RedirectResponse('/');
     }
 
+
     public function start(Request $request, AuthenticationException $authException = null)
     {
         // todo
     }
+
 
     public function supportsRememberMe()
     {

@@ -38,7 +38,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{category_slug}/{slug}" ,name="product_show"))
+     * @Route("/{category_slug}/{slug}" ,name="product_show",priority="-1")
      */
     public function show($slug, ProductRepository $productRepository)
     {
@@ -64,8 +64,11 @@ class ProductController extends AbstractController
     {
 
         $product = $productRepository->find($id);
+
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
+
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
