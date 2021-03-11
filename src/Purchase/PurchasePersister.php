@@ -11,22 +11,23 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
 
 
-class PurchasePersister{
+class PurchasePersister
+{
 
     protected $security;
     protected $cartService;
     protected $em;
-    public function __construct(Security $security ,CartService $cartService,EntityManagerInterface $em){
-        $this->security=$security;
-        $this->cartService=$cartService;
-        $this->em=$em;
+
+    public function __construct(Security $security, CartService $cartService, EntityManagerInterface $em)
+    {
+        $this->security = $security;
+        $this->cartService = $cartService;
+        $this->em = $em;
     }
 
     public function storePersist(Purchase $purchase)
     {
-        $purchase->setUser($this->security->getUser())
-            ->setPurchasedAt(new DateTime())
-            ->setTotal($this->cartService->getTotal());
+        $purchase->setUser($this->security->getUser());
 
         $this->em->persist($purchase);
 
@@ -40,6 +41,7 @@ class PurchasePersister{
                 ->setQuantity($cartItem->qty)
                 ->setTotal($cartItem->getTotal())
                 ->setProductPrice($cartItem->product->getPrice());
+
 
             $this->em->persist($purchaseItem);
         }
