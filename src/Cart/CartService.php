@@ -72,7 +72,6 @@ class CartService
     {
         $detailedCart = [];
 
-
         foreach ($this->getCart() as $id => $qty) {
             $product = $this->productRepository->find($id);
 

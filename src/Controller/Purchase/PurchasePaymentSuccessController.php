@@ -5,10 +5,12 @@ namespace App\Controller\Purchase;
 
 use App\Cart\CartService;
 use App\Entity\Purchase;
+use App\Event\PurchaseSuccessEvent;
 use App\Repository\PurchaseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PurchasePaymentSuccessController extends AbstractController{
@@ -18,7 +20,7 @@ class PurchasePaymentSuccessController extends AbstractController{
      * @Route("purchase/terminate/{id}",name="purchase_payment_success")
      * @IsGranted("ROLE_USER")
      */
-    public function success($id,PurchaseRepository $purchaseRepository,EntityManagerInterface $em,CartService $cartService){
+    public function success($id,EventDispatcherInterface $dispatcher,PurchaseRepository $purchaseRepository,EntityManagerInterface $em,CartService $cartService){
 
         $purchase=$purchaseRepository->find($id);
         if(!$purchase||
@@ -31,6 +33,10 @@ class PurchasePaymentSuccessController extends AbstractController{
 
         $em->flush();
         $cartService->empty();
+
+        $purchaseEvent=new PurchaseSuccessEvent($purchase);
+
+        $dispatcher->dispatch($purchaseEvent,'purchase.success');
 
         $this->addFlash('success','your order is payed and confirmed');
 
