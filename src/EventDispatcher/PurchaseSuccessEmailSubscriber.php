@@ -44,7 +44,7 @@ class PurchaseSuccessEmailSubscriber implements EventSubscriberInterface
         $email = new TemplatedEmail();
         $email->to(new Address($currentUser->getEmail(), $currentUser->getFullName()))
             ->from("bestpart@online.com")
-            ->subject("Congrats your order is confirmed ({$purchase->getId()})")
+            ->subject("Congrats your order is confirmed N_({$purchase->getId()})")
             ->htmlTemplate('emails/purchase_success.html.twig')
             ->context([
                 'purchase' => $purchase,

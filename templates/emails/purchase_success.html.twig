@@ -1,38 +1,36 @@
-<h1>Congrats for your purchase N_{{purchase.id}}</h1>
+<h1>Congrats for your purchase N_{{ purchase.id }}</h1>
 <p>
-	Dear
-	{{user.fullName}}
-	Thank you for the purchase
+    Dear
+    {{ user.fullName }}
+    Thank you for the purchase
 </p>
 
 <table>
-	<thead>
-		<th>Product</th>
-		<th>Quantity</th>
-		<th>Unitary Price</th>
-		<th>Total</th>
-	</thead>
-	<tbody>
+    <thead>
+    <th>Product</th>
+    <th>Quantity</th>
+    <th>Unitary Price</th>
+    <th>Total</th>
+    </thead>
+    <tbody>
 
-		{% for item in purchase.purchaseItems %}
-			<tr>
-				<td>{{item.productName}}</td>
-				<td>{{item.quantity}}</td>
-				<td>{{item.productPrice / 100 }}
-					€</td>
-				<td>{{item.total / 100}}
-					€</td>
-			</tr>
-		{% endfor %}
+    {% for item in purchase.purchaseItems %}
+        <tr>
+            <td>{{ item.productName }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.productPrice | amount }}</td>
+            <td>{{ item.total | amount }}</td>
+        </tr>
+    {% endfor %}
 
-	</tbody>
-	<tfoot>
-		<tr>
-			<td colspan="3">Total :</td>
-			<td>
-				{{purchase.total / 100}}
-				€
-			</td>
-		</tr>
-	</tfoot>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="3">Total :</td>
+        <td>
+            {{ purchase.total / 100 }}
+            €
+        </td>
+    </tr>
+    </tfoot>
 </table>

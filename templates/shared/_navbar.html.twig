@@ -37,11 +37,11 @@
             <li class="nav-item">
                 <a href="{{ path('cart_show') }}" class="nav-link">
                     <i class="fas fa-shopping-cart"></i>
-                    Cart ({{ cartServce.total }})
+                    Cart ({{ cartServce.total | amount }})
                 </a>
             </li>
             {% if app.user %}
-                <li class="nav-item"><a href="#" class="nav-link">My Purchases</a></li>
+                <li class="nav-item"><a href="{{ path('purchases_index') }}" class="nav-link">My Purchases</a></li>
                 <li class="nav-item"><a href="{{ path('security_logout') }}" class="btn btn-danger">Logout</a></li>
             {% else %}
                 <li class="nav-item"><a href="#" class="nav-link">Subscribe</a></li>
