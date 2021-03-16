@@ -27,11 +27,11 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/admin/category/create", name="category_create")
-     * @IsGranted("ROLE_ADMIN",message="You are not allowed to create a category")
+     /* @IsGranted("ROLE_ADMIN",message="You are not allowed to create a category")
      */
     public function create(EntityManagerInterface $entityManager, Request $request, SluggerInterface $slugger)
     {
-        $this->denyAccessUnlessGranted("ROlE_ADMIN",null,'You are not allowed to edit');
+      //  $this->denyAccessUnlessGranted("ROlE_ADMIN",null,'You are not allowed to edit');
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
 

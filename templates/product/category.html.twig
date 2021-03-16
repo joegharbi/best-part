@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 {% block title %}
-    Category: {{ category.name }}
+    Sub Category: {{ category.name }}
 {% endblock %}
 
 {% block body %}
@@ -12,13 +12,13 @@
         Category: {{ category.name }}
     </h1>
 
-    <div class="row">
-        {% for p in category.products %}
-            <div class="col-4">
-                {% include "product/_product_card.html.twig" %}
-            </div>
-        {% endfor %}
-    </div>
-    <div class="container"></div>
+
+    {% for sc in subCategoryRepository.findBy({category: category}) %}
+        <div class="col-4">
+            <p>{{ sc.name }}</p>
+        </div>
+    {% endfor %}
+
+
 
 {% endblock %}

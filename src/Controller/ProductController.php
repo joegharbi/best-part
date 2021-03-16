@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Repository\SubCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
-
 
 
 class ProductController extends AbstractController
@@ -30,13 +31,34 @@ class ProductController extends AbstractController
             throw $this->createNotFoundException("The category you chose does not exist ");
         }
         return $this->render('product/category.html.twig', [
-            'slug' => $slug,
             'category' => $category
         ]);
     }
 
     /**
-     * @Route("/{category_slug}/{slug}" ,name="product_show",priority="-1")
+     * @Route("/{category_slug}/{slug}", name="product_subcategory",priority="-1")
+     */
+    public function subCategory($slug, SubCategoryRepository $subCategoryRepository,ProductRepository $productRepository): Response
+    {
+        $subCategory = $subCategoryRepository->findOneBy([
+                'slug' => $slug]
+        );
+
+        $product= $productRepository->findBy([
+            'subCategory'=>$subCategory
+        ]);
+
+        if (!$subCategory) {
+            throw $this->createNotFoundException("The sub category you chose does not exist ");
+        }
+        return $this->render('product/subCategory.html.twig', [
+            'subCategory' => $subCategory,
+            'product'=>$product
+        ]);
+    }
+
+    /**
+     * @Route("/{category_slug}/{subcategory_slug}/{slug}" ,name="product_show",priority="-1")
      */
     public function show($slug, ProductRepository $productRepository)
     {
@@ -44,14 +66,14 @@ class ProductController extends AbstractController
 //        $product = $productRepository->findOneBy(['category' => $category, 'slug' => $slug]);
 
         $product = $productRepository->findOneBy(['slug' => $slug]);
+
         if (!$product) {
             $this->createNotFoundException("the product you're searching for does not exist");
         }
 
-       // $dispatcher->dispatch(new ProductViewEvent($product),'product.view');
 
         return $this->render('product/show.html.twig', [
-            'product' => $product
+            'product' => $product,
         ]);
 
     }
@@ -72,11 +94,11 @@ class ProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-           return $this->redirectToRoute('product_show',[
-               'category_slug'=>$product->getCategory()->getSlug(),
-               'slug'=>$product->getSlug()
+            return $this->redirectToRoute('product_show', [
+                'category_slug' => $product->getCategory()->getSlug(),
+                'slug' => $product->getSlug()
 
-           ]);
+            ]);
 //            return $this->render('product/show.html.twig', [
 //                'product'=>$product]);
         }
@@ -104,7 +126,7 @@ class ProductController extends AbstractController
             $entityManager->persist($product);
             $entityManager->flush();
             return $this->render('product/show.html.twig', [
-                'product'=>$product
+                'product' => $product
             ]);
         }
 

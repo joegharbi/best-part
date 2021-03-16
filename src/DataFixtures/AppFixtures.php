@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\Purchase;
 use App\Entity\PurchaseItem;
+use App\Entity\SubCategory;
 use App\Entity\User;
 use Bezhanov\Faker\Provider\Commerce;
 use Bluemmb\Faker\PicsumPhotosProvider;
@@ -24,7 +25,7 @@ class AppFixtures extends Fixture
     public function __construct(SluggerInterface $slugger, UserPasswordEncoderInterface $encoder)
     {
         $this->slugger = $slugger;
-        $this->encoder=$encoder;
+        $this->encoder = $encoder;
     }
 
     public function load(ObjectManager $manager)
@@ -36,85 +37,95 @@ class AppFixtures extends Fixture
         $faker->addProvider(new PicsumPhotosProvider($faker));
 
 
-        $admin=new User();
-        $hash=$this->encoder->encodePassword($admin,"password");
+        $admin = new User();
+        $hash = $this->encoder->encodePassword($admin, "password");
         $admin->setEmail("admin@gmail.com")
             ->setPassword($hash)
             ->setFullName($faker->name())
             ->setRoles(['ROLE_ADMIN']);
         $manager->persist($admin);
-        $users=[];
-        for ($u =0;$u<5;$u++){
+        $users = [];
+        for ($u = 0; $u < 5; $u++) {
 
-            $user=new User();
-            $hash=$this->encoder->encodePassword($user,"password");
+            $user = new User();
+            $hash = $this->encoder->encodePassword($user, "password");
             $user->setEmail("user$u@gmail.com")
-            ->setFullName($faker->name())
-            ->setPassword($hash);
+                ->setFullName($faker->name())
+                ->setPassword($hash);
 
-            $users[]=$user;
+            $users[] = $user;
 
             $manager->persist($user);
 
         }
 
-        $products=[];
+        $products = [];
 
         for ($c = 0; $c < 3; $c++) {
             $category = new Category();
             $category->setName($faker->department);
-             //   ->setSlug(strtolower($this->slugger->slug($category->getName())));
+            //   ->setSlug(strtolower($this->slugger->slug($category->getName())));
             $manager->persist($category);
+            $categories[] = $category;
 
-            for ($p = 0; $p < mt_rand(15, 20); $p++) {
 
-                $product = new Product;
-                $product->setName($faker->productName)
-                    ->setPrice($faker->price(4000, 20000))
-                 //   ->setSlug(strtolower($this->slugger->slug($product->getName())))
+            for ($sc = 0; $sc < mt_rand(3, 5); $sc++) {
+                $subCategory = new SubCategory();
+                $subCategory->setName($faker->department)
                     ->setCategory($category)
-                    ->setShortDescription($faker->paragraph())
-                    ->setMainPicture($faker->imageUrl(400,400,true));
+                    ->setSlug(strtolower($this->slugger->slug($subCategory->getName())));
+                $manager->persist($subCategory);
 
-                $products[]=$product;
 
-                $manager->persist($product);
+                for ($p = 0; $p < mt_rand(15, 20); $p++) {
+
+                    $product = new Product;
+                    $product->setName($faker->productName)
+                        ->setPrice($faker->price(4000, 20000))
+                        //   ->setSlug(strtolower($this->slugger->slug($product->getName())))
+                        ->setSubcategory($subCategory)
+                        ->setShortDescription($faker->paragraph())
+                        ->setMainPicture($faker->imageUrl(400, 400, true));
+
+                    $products[] = $product;
+
+                    $manager->persist($product);
+                }
             }
         }
-        for ($p=0;$p<mt_rand(20,40);$p++){
-            $purchase=new Purchase;
+
+        for ($p = 0; $p < mt_rand(20, 40); $p++) {
+            $purchase = new Purchase;
             $purchase->setFullName($faker->name)
                 ->setAddress($faker->streetAddress)
                 ->setPostalCode($faker->postcode)
                 ->setCity($faker->city)
                 ->setUser($faker->randomElement($users))
-            ->setTotal(mt_rand(2000,30000))
-            ->setPurchasedAt($faker->dateTimeBetween('-6 months'));
+                ->setTotal(mt_rand(2000, 30000))
+                ->setPurchasedAt($faker->dateTimeBetween('-6 months'));
 
 
-            $selectedProducts=$faker->randomElements($products,mt_rand(3,5));
+            $selectedProducts = $faker->randomElements($products, mt_rand(3, 5));
 
-            foreach ($selectedProducts as $product){
-               $purchaseItem=new PurchaseItem();
-               $purchaseItem->setProduct($product)
-               ->setQuantity(mt_rand(1,3))
-                   ->setProductName($product->getName())
-                   ->setProductPrice($product->getPrice())
-                   ->setTotal(
-                       $purchaseItem->getProductPrice()*$purchaseItem->getQuantity()
-                   )
-                   ->setPurchase($purchase);
-               $manager->persist($purchaseItem);
+            foreach ($selectedProducts as $product) {
+                $purchaseItem = new PurchaseItem();
+                $purchaseItem->setProduct($product)
+                    ->setQuantity(mt_rand(1, 3))
+                    ->setProductName($product->getName())
+                    ->setProductPrice($product->getPrice())
+                    ->setTotal(
+                        $purchaseItem->getProductPrice() * $purchaseItem->getQuantity()
+                    )
+                    ->setPurchase($purchase);
+                $manager->persist($purchaseItem);
 
             }
 
-                if($faker->boolean(90)){
-                    $purchase->setStatus(Purchase::STATUS_PAID);
-                }
-                $manager->persist($purchase);
+            if ($faker->boolean(90)) {
+                $purchase->setStatus(Purchase::STATUS_PAID);
+            }
+            $manager->persist($purchase);
         }
-
-
 
 
         $manager->flush();

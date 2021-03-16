@@ -2,14 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Repository\UserRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(
+ *     fields={"email"},
+ *     message="The email you typed is already in use"
+ * )
  */
 class User implements UserInterface
 {
@@ -22,6 +28,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email()
      */
     private $email;
 
@@ -33,8 +40,16 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Length(min="8",minMessage="Your password should be at least 8 caracters long")
+     * @Assert\NotBlank(message="You should write your password")
      */
     private $password;
+
+    /**
+     * @Assert\EqualTo(propertyPath="password",message="Your password and confirm password are not the same")
+     * @Assert\NotBlank(message="You should confirm your password")
+     */
+    public $confirm_password;
 
     /**
      * @ORM\Column(type="string", length=255)

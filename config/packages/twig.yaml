@@ -4,4 +4,5 @@ twig:
   - bootstrap_4_layout.html.twig
   globals:
     categoryRepository: "@App\\Repository\\CategoryRepository"
+    subCategoryRepository: "@App\\Repository\\SubCategoryRepository"
     cartServce: "@App\\Cart\\CartService"

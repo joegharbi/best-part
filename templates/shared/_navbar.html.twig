@@ -12,21 +12,37 @@
                     <span class="sr-only">(current)</span>
                 </a>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link" href="#">About</a>
             </li>
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                    aria-expanded="false">Categories</a>
-                <div class="dropdown-menu">
+
+
+                <ul class="dropdown-menu">
+
                     {% for c in categoryRepository.findAll() %}
-                        <a class="dropdown-item"
-                           href="{{ path('product_category', {'slug': c.slug}) }}">{{ c.name }}</a>
+                        <li class="nav-item dropdown show btn-primary">
+                            <a class="nav-link"
+                               href="{{ path('product_category', {'slug': c.slug}) }}">{{ c.name }}</a>
+                        </li>
+                        {% for sc in subCategoryRepository.findBy({category: c}) %}
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item"
+                                   href="{{ path('product_subcategory',{'category_slug': c.slug, 'slug': sc.slug}) }}">{{ sc.name }}</a>
+                            </li>
+                        {% endfor %}
+
+
+
                     {% endfor %}
-                </div>
-            </li>
+                </ul>
+
+
         </ul>
+
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" placeholder="Search">
             <button class="btn btn-secondary my-2 my-sm-0" type="submit">
@@ -42,12 +58,15 @@
             </li>
             {% if app.user %}
                 <li class="nav-item"><a href="{{ path('purchases_index') }}" class="nav-link">My Purchases</a></li>
+                <li class="nav-item"> Welcome {{ app.user.fullName }}</li>
                 <li class="nav-item"><a href="{{ path('security_logout') }}" class="btn btn-danger">Logout</a></li>
             {% else %}
-                <li class="nav-item"><a href="#" class="nav-link">Subscribe</a></li>
+                <li class="nav-item"><a href="{{ path('security_registration') }}" class="nav-link">Subscribe</a></li>
                 <li class="nav-item"><a href="{{ path('security_login') }}" class="btn btn-success">Login</a></li>
             {% endif %}
 
+
         </ul>
+
     </div>
 </nav>

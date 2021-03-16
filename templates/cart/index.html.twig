@@ -24,7 +24,7 @@
             {% for item in items %}
                 <tr>
                     <td>{{ item.product.name }}</td>
-                    <td>{{ item.product.price | amount}}</td>
+                    <td>{{ item.product.price | amount }}</td>
                     <td>
                         <a href="{{ path("cart_add",{'id':item.product.id}) }}?returnToCart=true"
                            class="btn-sm btn-primary">
@@ -35,22 +35,22 @@
                             <i class="fas fa-minus"></i>
                         </a>
                     </td>
-                    <td>{{ item.total  | amount}}</td>
+                    <td>{{ item.total  | amount }}</td>
                     <td><a href="{{ path("cart_delete",{'id':item.product.id}) }}" class="btn btn-sm btn-danger">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>
                 </tr>
             {% endfor %}
+            </tbody>
             <tfoot>
             <tr>
                 <td colspan="3">
                     Total :
                 </td>
-                <td colspan="2">{{ total | amount}}</td>
+                <td colspan="2">{{ total | amount }}</td>
             </tr>
             </tfoot>
-            </tbody>
         </table>
         <hr>
         {% if app.user %}
@@ -63,7 +63,7 @@
         {% else %}
             <h2>You need to be logged in to confirm your purchase</h2>
             <a href="{{ path('security_login') }}" class="btn btn-success">Login</a>
-            or <a href="#">Create an account</a>
+            or <a href="{{ path('security_registration') }}">Create an account</a>
         {% endif %}
     {% else %}
         <h2>Empty cart</h2>

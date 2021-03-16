@@ -47,7 +47,8 @@ class CartController extends AbstractController
         }
         return $this->redirectToRoute('product_show', [
             'slug' => $product->getSlug(),
-            'category_slug' => $product->getCategory()->getSlug()
+            'subcategory_slug'=> $product->getSubCategory()->getSlug(),
+            'category_slug'=> $product->getSubCategory()->getCategory()->getSlug()
         ]);
     }
 

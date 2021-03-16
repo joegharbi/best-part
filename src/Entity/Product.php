@@ -41,11 +41,11 @@ class Product
      */
     private $slug;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
-     * @Assert\NotBlank (message="Please choose a valid category")
-     */
-    private $category;
+//    /**
+//     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
+//     * @Assert\NotBlank (message="Please choose a valid category")
+//     */
+//    private $category;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -65,6 +65,11 @@ class Product
      * @ORM\OneToMany(targetEntity=PurchaseItem::class, mappedBy="product")
      */
     private $purchaseItems;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="products")
+     */
+    private $subCategory;
 
 
     public function __construct()
@@ -112,18 +117,18 @@ class Product
 
         return $this;
     }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        $this->category = $category;
-
-        return $this;
-    }
+//
+//    public function getCategory(): ?Category
+//    {
+//        return $this->category;
+//    }
+//
+//    public function setCategory(?Category $category): self
+//    {
+//        $this->category = $category;
+//
+//        return $this;
+//    }
 
     public function getMainPicture(): ?string
     {
@@ -175,6 +180,18 @@ class Product
                 $purchaseItem->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSubCategory(): ?SubCategory
+    {
+        return $this->subCategory;
+    }
+
+    public function setSubCategory(?SubCategory $subCategory): self
+    {
+        $this->subCategory = $subCategory;
 
         return $this;
     }

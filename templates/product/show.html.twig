@@ -6,7 +6,16 @@
 
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ path('product_category',{'slug':product.category.slug}) }}">{{ product.category.name }}</a></li>
+
+        <li class="breadcrumb-item"><a href="{{ path('product_category',
+                {'slug':product.subCategory.category.slug}) }}">
+                {{ product.subCategory.category.name }}</a></li>
+
+        <li class="breadcrumb-item"><a href="{{ path('product_subcategory',
+                {'slug':product.subCategory.slug,
+            'category_slug':product.subCategory.category.slug
+            }) }}">{{ product.subCategory.name }}</a></li>
+
         <li class="breadcrumb-item active">{{ product.name }}</li>
     </ol>
 <h1>{{ product.name }}({{ product.price | amount}})</h1>
@@ -16,7 +25,7 @@
         </div>
         <div class="col">
             <span class="badge badge-primary">
-                {{ product.category.name }}
+                {{ product.subCategory.name }}
             </span>
             <p>
                 {{ product.shortDescription }}
