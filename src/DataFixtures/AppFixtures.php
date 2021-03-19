@@ -84,6 +84,7 @@ class AppFixtures extends Fixture
                         ->setPrice($faker->price(4000, 20000))
                         //   ->setSlug(strtolower($this->slugger->slug($product->getName())))
                         ->setSubcategory($subCategory)
+                        ->setUpdatedAt($faker->dateTimeBetween('-6 months'))
                         ->setShortDescription($faker->paragraph())
                         ->setMainPicture($faker->imageUrl(400, 400, true));
 

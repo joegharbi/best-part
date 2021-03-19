@@ -1,10 +1,16 @@
 <div class="card">
-    <img src="{{ p.mainPicture }}" class="img-fluid" alt="Product image">
+
+    {% if 'https' in  p.mainPicture | raw %}
+        <img src="{{ p.mainPicture }}" class="img-fluid" alt="Product image">
+    {% else %}
+        <img src="{{ vich_uploader_asset(p,'mainPictureFile') }}" class="img-fluid" alt="Product image">
+    {% endif %}
+
     <div class="card-body">
         <h4 class="card-tittle">{{ p.name }}
             ({{ p.price | amount }})</h4>
         <span class="badge badge-info">{{ p.subCategory.name }}</span>
-        <p class="card-text">{{ p.shortDescription }}</p>
+        <p class="card-text">{{ p.shortDescription |raw }}</p>
         <a href="{{ path('product_show',
             {
                 'slug':p.slug,

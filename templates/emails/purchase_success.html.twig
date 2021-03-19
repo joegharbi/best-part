@@ -28,8 +28,7 @@
     <tr>
         <td colspan="3">Total :</td>
         <td>
-            {{ purchase.total / 100 }}
-            €
+            {{ purchase.total | amount}}
         </td>
     </tr>
     </tfoot>

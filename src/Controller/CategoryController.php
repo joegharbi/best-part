@@ -25,30 +25,30 @@ class CategoryController extends AbstractController
 //        ]);
 //    }
 
-    /**
-     * @Route("/admin/category/create", name="category_create")
-     /* @IsGranted("ROLE_ADMIN",message="You are not allowed to create a category")
-     */
-    public function create(EntityManagerInterface $entityManager, Request $request, SluggerInterface $slugger)
-    {
-      //  $this->denyAccessUnlessGranted("ROlE_ADMIN",null,'You are not allowed to edit');
-        $category = new Category();
-        $form = $this->createForm(CategoryType::class, $category);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $category->setSlug(strtolower($slugger->slug($category->getName())));
-            $entityManager->persist($category);
-            $entityManager->flush();
-            return $this->redirectToRoute('homepage');
-        }
-
-        $formView = $form->createView();
-
-
-        return $this->render('category/create.html.twig', ['formView' => $formView]);
-    }
+//    /**
+//     * @Route("/admin/category/create", name="category_create")
+//     /* @IsGranted("ROLE_ADMIN",message="You are not allowed to create a category")
+//     */
+//    public function create(EntityManagerInterface $entityManager, Request $request, SluggerInterface $slugger)
+//    {
+//      //  $this->denyAccessUnlessGranted("ROlE_ADMIN",null,'You are not allowed to edit');
+//        $category = new Category();
+//        $form = $this->createForm(CategoryType::class, $category);
+//
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $category->setSlug(strtolower($slugger->slug($category->getName())));
+//            $entityManager->persist($category);
+//            $entityManager->flush();
+//            return $this->redirectToRoute('homepage');
+//        }
+//
+//        $formView = $form->createView();
+//
+//
+//        return $this->render('category/create.html.twig', ['formView' => $formView]);
+//    }
 
 
     /**

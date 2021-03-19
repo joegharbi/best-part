@@ -1,0 +1,10 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        mainPictures:
+            uri_prefix: /images/mainPictures
+            upload_destination: '%kernel.project_dir%/public/images/mainPictures'
+            namer: 'Vich\UploaderBundle\Naming\UniqidNamer'
+            delete_on_remove: true
+            delete_on_update: true

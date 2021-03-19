@@ -80,27 +80,6 @@ class SubCategory
         return $this;
     }
 
-//    public function getCategory(): ?Category
-//    {
-//        return $this->category;
-//    }
-//
-//    public function setCategory(?Category $category): self
-//    {
-//        // unset the owning side of the relation if necessary
-//        if ($category === null && $this->category !== null) {
-//            $this->category->setSubCategory(null);
-//        }
-//
-//        // set the owning side of the relation if necessary
-//        if ($category !== null && $category->getSubCategory() !== $this) {
-//            $category->setSubCategory($this);
-//        }
-//
-//        $this->category = $category;
-//
-//        return $this;
-//    }
 
     /**
      * @return Collection|Product[]
@@ -144,5 +123,9 @@ class SubCategory
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
 
 }

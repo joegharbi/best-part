@@ -87,36 +87,7 @@ $this->subCategories = new ArrayCollection();
 
         return $this;
     }
-//
-//    /**
-//     * @return Collection|Product[]
-//     */
-//    public function getProducts(): Collection
-//    {
-//        return $this->products;
-//    }
-//
-//    public function addProduct(Product $product): self
-//    {
-//        if (!$this->products->contains($product)) {
-//            $this->products[] = $product;
-//            $product->setCategory($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeProduct(Product $product): self
-//    {
-//        if ($this->products->removeElement($product)) {
-//            // set the owning side to null (unless already changed)
-//            if ($product->getCategory() === $this) {
-//                $product->setCategory(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
+
 
     public function getOwner(): ?User
     {
@@ -129,18 +100,6 @@ $this->subCategories = new ArrayCollection();
 
         return $this;
     }
-//
-//    public function getSubCategory(): ?SubCategory
-//    {
-//        return $this->subCategory;
-//    }
-//
-//    public function setSubCategory(?SubCategory $subCategory): self
-//    {
-//        $this->subCategory = $subCategory;
-//
-//        return $this;
-//    }
 
 /**
  * @return Collection|SubCategory[]
@@ -171,5 +130,9 @@ public function removeSubCategory(SubCategory $subCategory): self
 
     return $this;
 }
+    public function __toString()
+    {
+        return $this->name;
+    }
 
 }

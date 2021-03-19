@@ -6,11 +6,14 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use DateTime;
+
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
+ * @Vich\Uploadable()
  */
 class Product
 {
@@ -49,8 +52,6 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank (message="This should not be empty")
-     * @Assert\Url(message="This should be a valid url")
      */
     private $mainPicture;
 
@@ -71,10 +72,61 @@ class Product
      */
     private $subCategory;
 
+    /**
+     * @Vich\UploadableField(mapping="mainPictures",fileNameProperty="mainPicture")
+     */
+    private $mainPictureFile;
+
+    /**
+     * @return mixed
+     */
+    public function getMainPictureFile()
+    {
+        return $this->mainPictureFile;
+    }
+
+    /**
+     * @param mixed $mainPictureFile
+     */
+    public function setMainPictureFile($mainPictureFile): void
+    {
+        $this->mainPictureFile = $mainPictureFile;
+    }
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
 
     public function __construct()
     {
         $this->purchaseItems = new ArrayCollection();
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        if (empty($this->updatedAt)) {
+            $this->updatedAt = new DateTime();
+        }
+
     }
 
     public function getId(): ?int

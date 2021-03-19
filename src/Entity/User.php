@@ -49,7 +49,23 @@ class User implements UserInterface
      * @Assert\EqualTo(propertyPath="password",message="Your password and confirm password are not the same")
      * @Assert\NotBlank(message="You should confirm your password")
      */
-    public $confirm_password;
+    private $confirm_password;
+
+    /**
+     * @return mixed
+     */
+    public function getConfirmPassword()
+    {
+        return $this->confirm_password;
+    }
+
+    /**
+     * @param mixed $confirm_password
+     */
+    public function setConfirmPassword($confirm_password): void
+    {
+        $this->confirm_password = $confirm_password;
+    }
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -65,6 +81,16 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Category::class, mappedBy="owner")
      */
     private $categories;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
 
     public function __construct()
     {
@@ -96,7 +122,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -123,7 +149,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
@@ -221,6 +247,35 @@ class User implements UserInterface
                 $category->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getFullName() . ': ' . $this->getEmail();
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

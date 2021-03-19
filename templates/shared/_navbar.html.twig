@@ -56,15 +56,22 @@
                     Cart ({{ cartServce.total | amount }})
                 </a>
             </li>
-            {% if app.user %}
-                <li class="nav-item"><a href="{{ path('purchases_index') }}" class="nav-link">My Purchases</a></li>
-                <li class="nav-item"> Welcome {{ app.user.fullName }}</li>
-                <li class="nav-item"><a href="{{ path('security_logout') }}" class="btn btn-danger">Logout</a></li>
-            {% else %}
-                <li class="nav-item"><a href="{{ path('security_registration') }}" class="nav-link">Subscribe</a></li>
-                <li class="nav-item"><a href="{{ path('security_login') }}" class="btn btn-success">Login</a></li>
-            {% endif %}
 
+
+            {% if app.user and 'ROLE_ADMIN' in (app.user.roles) %}
+                <li class="nav-item"><a href="{{ path('admin') }}" class="nav-link">Go to settings</a></li>
+
+            {% else %}
+                {% if app.user %}
+                    <li class="nav-item"><a href="{{ path('purchases_index') }}" class="nav-link">My Purchases</a></li>
+                    <li class="nav-item"> Welcome {{ app.user.fullName }}</li>
+                    <li class="nav-item"><a href="{{ path('security_logout') }}" class="btn btn-danger">Logout</a></li>
+                {% else %}
+                    <li class="nav-item"><a href="{{ path('security_registration') }}" class="nav-link">Subscribe</a>
+                    </li>
+                    <li class="nav-item"><a href="{{ path('security_login') }}" class="btn btn-success">Login</a></li>
+                {% endif %}
+            {% endif %}
 
         </ul>
 
