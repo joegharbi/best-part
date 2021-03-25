@@ -3,6 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
+use App\Entity\Make;
+use App\Entity\Model;
 use App\Entity\Product;
 use App\Entity\Purchase;
 use App\Entity\PurchaseItem;
@@ -41,6 +43,8 @@ class AppFixtures extends Fixture
         $hash = $this->encoder->encodePassword($admin, "password");
         $admin->setEmail("admin@gmail.com")
             ->setPassword($hash)
+            ->setCreatedAt($faker->dateTimeBetween('-6 months'))
+            ->setUpdatedAt($faker->dateTimeBetween('-5 months'))
             ->setFullName($faker->name())
             ->setRoles(['ROLE_ADMIN']);
         $manager->persist($admin);
@@ -50,6 +54,8 @@ class AppFixtures extends Fixture
             $user = new User();
             $hash = $this->encoder->encodePassword($user, "password");
             $user->setEmail("user$u@gmail.com")
+                ->setCreatedAt($faker->dateTimeBetween('-6 months'))
+                ->setUpdatedAt($faker->dateTimeBetween('-5 months'))
                 ->setFullName($faker->name())
                 ->setPassword($hash);
 
@@ -60,6 +66,27 @@ class AppFixtures extends Fixture
         }
 
         $products = [];
+
+        for ($m = 0; $m < 3; $m++) {
+
+            $make = new Make();
+            $make->setName($faker->department);
+            $models = [];
+            $manager->persist($make);
+
+            for ($md = 0; $md < 4; $md++) {
+
+                $model = new Model();
+                $model->setMake($make);
+                $model->setName($faker->department);
+                $model->setProductionYear($faker->year);
+
+                $models[] = $model;
+                $manager->persist($model);
+            }
+
+        }
+
 
         for ($c = 0; $c < 3; $c++) {
             $category = new Category();
@@ -76,21 +103,28 @@ class AppFixtures extends Fixture
                     ->setSlug(strtolower($this->slugger->slug($subCategory->getName())));
                 $manager->persist($subCategory);
 
+                /**
+                 * @var $models
+                 */
+                $selectedModels = $faker->randomElements($models);
 
-                for ($p = 0; $p < mt_rand(15, 20); $p++) {
+                foreach ($selectedModels as $sm) {
 
-                    $product = new Product;
-                    $product->setName($faker->productName)
-                        ->setPrice($faker->price(4000, 20000))
-                        //   ->setSlug(strtolower($this->slugger->slug($product->getName())))
-                        ->setSubcategory($subCategory)
-                        ->setUpdatedAt($faker->dateTimeBetween('-6 months'))
-                        ->setShortDescription($faker->paragraph())
-                        ->setMainPicture($faker->imageUrl(400, 400, true));
+                    for ($p = 0; $p < mt_rand(15, 20); $p++) {
+                        $product = new Product;
+                        $product->setName($faker->productName)
+                            ->setPrice($faker->price(4000, 20000))
+                            ->setModel($sm)
+                            //   ->setSlug(strtolower($this->slugger->slug($product->getName())))
+                            ->setSubcategory($subCategory)
+                            ->setUpdatedAt($faker->dateTimeBetween('-6 months'))
+                            ->setShortDescription($faker->paragraph())
+                            ->setMainPicture($faker->imageUrl(400, 400, true));
 
-                    $products[] = $product;
+                        $products[] = $product;
 
-                    $manager->persist($product);
+                        $manager->persist($product);
+                    }
                 }
             }
         }

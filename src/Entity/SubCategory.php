@@ -125,7 +125,7 @@ class SubCategory
 
     public function __toString()
     {
-        return $this->name;
+        return $this->getCategory().'-> '.$this->name;
     }
 
 }

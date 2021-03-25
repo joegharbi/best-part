@@ -73,7 +73,7 @@ class User implements UserInterface
     private $fullName;
 
     /**
-     * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="user", cascade="all")
      */
     private $purchases;
 

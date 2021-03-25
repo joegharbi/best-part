@@ -22,7 +22,6 @@
 
 
                 <ul class="dropdown-menu">
-
                     {% for c in categoryRepository.findAll() %}
                         <li class="nav-item dropdown show btn-primary">
                             <a class="nav-link"
@@ -34,21 +33,23 @@
                                    href="{{ path('product_subcategory',{'category_slug': c.slug, 'slug': sc.slug}) }}">{{ sc.name }}</a>
                             </li>
                         {% endfor %}
-
-
-
                     {% endfor %}
                 </ul>
+            </li>
 
 
+{#            <li class="nav-item dropdown">#}
+{#                <a class="nav-link" href="{{ path('product_make') }}" role="button" aria-haspopup="true"#}
+{#                   aria-expanded="false">Search by Maker</a>#}
+{#            </li>#}
         </ul>
 
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search">
-            <button class="btn btn-secondary my-2 my-sm-0" type="submit">
-                <span class="fa fa-search form-control-feedback"></span>
-            </button>
-        </form>
+{#        <form class="form-inline my-2 my-lg-0">#}
+{#            <input class="form-control mr-sm-2" type="text" placeholder="Search">#}
+{#            <button class="btn btn-secondary my-2 my-sm-0" type="submit">#}
+{#                <span class="fa fa-search form-control-feedback"></span>#}
+{#            </button>#}
+{#        </form>#}
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a href="{{ path('cart_show') }}" class="nav-link">

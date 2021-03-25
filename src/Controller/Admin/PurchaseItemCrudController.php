@@ -3,13 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Entity\PurchaseItem;
-use App\Repository\PurchaseItemRepository;
-use App\Repository\PurchaseRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
@@ -18,23 +16,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 class PurchaseItemCrudController extends AbstractCrudController
 {
 
-
-    /**
-     * @var PurchaseItemRepository
-     */
-    private $purchaseItemRepository;
-    /**
-     * @var PurchaseRepository
-     */
-    private $purchaseRepository;
-
-    public function __construct(PurchaseItemRepository $purchaseItemRepository,PurchaseRepository $purchaseRepository)
-    {
-
-        $this->purchaseItemRepository = $purchaseItemRepository;
-        $this->purchaseRepository = $purchaseRepository;
-    }
-
     public static function getEntityFqcn(): string
     {
         return PurchaseItem::class;
@@ -42,19 +23,11 @@ class PurchaseItemCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-
-        $purchaselist=[];
-
-        foreach ( $this->purchaseItemRepository->findBy(['id'=>$this->purchaseRepository->findAll()]) as $purchase){
-            $purchaselist[]=$purchase;
-        }
-
-
         return [
             IdField::new('id'),
+            AssociationField::new('product'),
+            AssociationField::new('purchase'),
             TextField::new('productName'),
-
-            ArrayField::new($purchaseItems),
             IntegerField::new('quantity'),
             MoneyField::new('productPrice')->setCurrency('EUR'),
             MoneyField::new('total')->setCurrency('EUR'),

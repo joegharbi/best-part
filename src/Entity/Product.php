@@ -63,7 +63,7 @@ class Product
     private $shortDescription;
 
     /**
-     * @ORM\OneToMany(targetEntity=PurchaseItem::class, mappedBy="product")
+     * @ORM\OneToMany(targetEntity=PurchaseItem::class, mappedBy="product",cascade="all")
      */
     private $purchaseItems;
 
@@ -98,6 +98,10 @@ class Product
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PartModel::class, mappedBy="part", orphanRemoval=true)
+     */
+    private $partModels;
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
@@ -116,6 +120,7 @@ class Product
     public function __construct()
     {
         $this->purchaseItems = new ArrayCollection();
+        $this->partModels = new ArrayCollection();
     }
 
     /**
@@ -248,4 +253,38 @@ class Product
         return $this;
     }
 
+    /**
+     * @return Collection|PartModel[]
+     */
+    public function getPartModels(): Collection
+    {
+        return $this->partModels;
+    }
+
+    public function addPartModel(PartModel $partModel): self
+    {
+        if (!$this->partModels->contains($partModel)) {
+            $this->partModels[] = $partModel;
+            $partModel->setPart($this);
+        }
+
+        return $this;
+    }
+
+    public function removePartModel(PartModel $partModel): self
+    {
+        if ($this->partModels->removeElement($partModel)) {
+            // set the owning side to null (unless already changed)
+            if ($partModel->getPart() === $this) {
+                $partModel->setPart(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
