@@ -32,14 +32,15 @@ class ModelYearEngineTransmission
     private $transmission;
 
     /**
-     * @ORM\OneToMany(targetEntity=PartModel::class, mappedBy="model", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="modelYearEngineTransmission")
      */
-    private $partModels;
+    private $products;
+
 
 
     public function __construct()
     {
-        $this->partModels = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,39 +72,40 @@ class ModelYearEngineTransmission
         return $this;
     }
 
-    /**
-     * @return Collection|PartModel[]
-     */
-    public function getPartModels(): Collection
-    {
-        return $this->partModels;
-    }
-
-    public function addPartModel(PartModel $partModel): self
-    {
-        if (!$this->partModels->contains($partModel)) {
-            $this->partModels[] = $partModel;
-            $partModel->setModel($this);
-        }
-
-        return $this;
-    }
-
-    public function removePartModel(PartModel $partModel): self
-    {
-        if ($this->partModels->removeElement($partModel)) {
-            // set the owning side to null (unless already changed)
-            if ($partModel->getModel() === $this) {
-                $partModel->setModel(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function __toString()
     {
         return $this->modelYearEngine.'-'.$this->transmission;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setModelYearEngineTransmission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getModelYearEngineTransmission() === $this) {
+                $product->setModelYearEngineTransmission(null);
+            }
+        }
+
+        return $this;
     }
 
 }

@@ -99,8 +99,8 @@ class AppFixtures extends Fixture
             for ($sc = 0; $sc < mt_rand(3, 5); $sc++) {
                 $subCategory = new SubCategory();
                 $subCategory->setName($faker->department)
-                    ->setCategory($category)
-                    ->setSlug(strtolower($this->slugger->slug($subCategory->getName())));
+                    ->setCategory($category);
+//                    ->setSlug(strtolower($this->slugger->slug($subCategory->getName())));
                 $manager->persist($subCategory);
 
                 /**

@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Model;
+use Doctrine\ORM\Mapping\Id;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -24,8 +25,10 @@ class ModelCrudController extends AbstractCrudController
     {
         return [
 
+            IdField::new('id')->onlyOnIndex(),
             TextField::new('name'),
             AssociationField::new('make'),
+            TextField::new('slug')->onlyOnDetail()
 
 
         ];

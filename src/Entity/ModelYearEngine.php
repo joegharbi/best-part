@@ -36,9 +36,15 @@ class ModelYearEngine
      */
     private $modelYearEngineTransmissions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="modelYearEngine")
+     */
+    private $products;
+
     public function __construct()
     {
         $this->modelYearEngineTransmissions = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -103,5 +109,35 @@ class ModelYearEngine
     public function __toString()
     {
         return $this->modelYear.'-'.$this->engine;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setModelYearEngine($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getModelYearEngine() === $this) {
+                $product->setModelYearEngine(null);
+            }
+        }
+
+        return $this;
     }
 }

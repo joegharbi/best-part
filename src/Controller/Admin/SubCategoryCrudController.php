@@ -24,9 +24,11 @@ class SubCategoryCrudController extends AbstractCrudController
     {
         return [
 
-            TextField::new('name'),
             AssociationField::new('category'),
+            TextField::new('name'),
             TextField::new('slug')->onlyOnDetail()
+
+
         ];
     }
 

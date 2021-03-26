@@ -10,6 +10,12 @@
         <h4 class="card-tittle">{{ p.name }}
             ({{ p.price | amount }})</h4>
         <span class="badge badge-info">{{ p.subCategory.name }}</span>
+        {% if p.available %}
+            <span class="badge badge-success">Available</span>
+        {% else %}
+            <span class="badge badge-danger">Not available</span>
+        {% endif %}
+
         <p class="card-text">{{ p.shortDescription |raw }}</p>
         <a href="{{ path('product_show',
             {
@@ -17,6 +23,16 @@
                 'category_slug': p.subCategory.category.slug,
                 'subcategory_slug': p.subCategory.slug
             }) }}" class="btn btn-primary btn-sm">Details</a>
-        <a href="{{ path('cart_add',{'id':p.id}) }}" class="btn btn-success btn-sm">Add</a>
+        {% if p.available %}
+            <a href="{{ path('cart_add',{'id':p.id}) }}" class="btn btn-success btn-sm">
+                <i class="fas fa-shopping-cart"></i>
+                Add to Cart
+            </a>
+        {% else %}
+            <a href="#" class="btn btn-danger btn-sm disabled">
+                <i class="fas fa-shopping-cart"></i>
+                Add to Cart
+            </a>
+        {% endif %}
     </div>
 </div>

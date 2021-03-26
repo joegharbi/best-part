@@ -29,6 +29,11 @@ class Transmission
      */
     private $modelYearEngineTransmissions;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->modelYearEngineTransmissions = new ArrayCollection();
@@ -84,5 +89,17 @@ class Transmission
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }

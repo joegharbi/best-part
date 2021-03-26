@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -36,6 +37,12 @@ class ProductCrudController extends AbstractCrudController
             ImageField::new('mainPicture')->setBasePath('/images/mainPictures')->hideOnForm(),
             DateField::new('updatedAt')->onlyOnIndex(),
             AssociationField::new('subCategory'),
+            BooleanField::new('available'),
+            AssociationField::new('make'),
+            AssociationField::new('model'),
+            AssociationField::new('modelYear'),
+            AssociationField::new('modelYearEngine'),
+            AssociationField::new('modelYearEngineTransmission'),
             MoneyField::new('price')->setCurrency('EUR'),
 
 

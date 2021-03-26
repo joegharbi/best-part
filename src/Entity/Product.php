@@ -99,9 +99,35 @@ class Product
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=PartModel::class, mappedBy="part", orphanRemoval=true)
+     * @ORM\ManyToOne(targetEntity=ModelYearEngineTransmission::class, inversedBy="products")
      */
-    private $partModels;
+    private $modelYearEngineTransmission;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ModelYearEngine::class, inversedBy="products")
+     */
+    private $modelYearEngine;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ModelYear::class, inversedBy="products")
+     */
+    private $modelYear;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Model::class, inversedBy="products")
+     */
+    private $model;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Make::class, inversedBy="products")
+     */
+    private $make;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $available;
+
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
@@ -120,7 +146,6 @@ class Product
     public function __construct()
     {
         $this->purchaseItems = new ArrayCollection();
-        $this->partModels = new ArrayCollection();
     }
 
     /**
@@ -253,38 +278,81 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection|PartModel[]
-     */
-    public function getPartModels(): Collection
-    {
-        return $this->partModels;
-    }
-
-    public function addPartModel(PartModel $partModel): self
-    {
-        if (!$this->partModels->contains($partModel)) {
-            $this->partModels[] = $partModel;
-            $partModel->setPart($this);
-        }
-
-        return $this;
-    }
-
-    public function removePartModel(PartModel $partModel): self
-    {
-        if ($this->partModels->removeElement($partModel)) {
-            // set the owning side to null (unless already changed)
-            if ($partModel->getPart() === $this) {
-                $partModel->setPart(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getModelYearEngineTransmission(): ?ModelYearEngineTransmission
+    {
+        return $this->modelYearEngineTransmission;
+    }
+
+    public function setModelYearEngineTransmission(?ModelYearEngineTransmission $modelYearEngineTransmission): self
+    {
+        $this->modelYearEngineTransmission = $modelYearEngineTransmission;
+
+        return $this;
+    }
+
+    public function getModelYearEngine(): ?ModelYearEngine
+    {
+        return $this->modelYearEngine;
+    }
+
+    public function setModelYearEngine(?ModelYearEngine $modelYearEngine): self
+    {
+        $this->modelYearEngine = $modelYearEngine;
+
+        return $this;
+    }
+
+    public function getModelYear(): ?ModelYear
+    {
+        return $this->modelYear;
+    }
+
+    public function setModelYear(?ModelYear $modelYear): self
+    {
+        $this->modelYear = $modelYear;
+
+        return $this;
+    }
+
+    public function getModel(): ?Model
+    {
+        return $this->model;
+    }
+
+    public function setModel(?Model $model): self
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
+    public function getMake(): ?Make
+    {
+        return $this->make;
+    }
+
+    public function setMake(?Make $make): self
+    {
+        $this->make = $make;
+
+        return $this;
+    }
+
+    public function getAvailable(): ?bool
+    {
+        return $this->available;
+    }
+
+    public function setAvailable(bool $available): self
+    {
+        $this->available = $available;
+
+        return $this;
     }
 }

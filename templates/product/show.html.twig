@@ -31,13 +31,27 @@
             <span class="badge badge-primary">
                 {{ product.subCategory.name }}
             </span>
+            {% if product.available %}
+                <span class="badge badge-success">Available</span>
+            {% else %}
+                <span class="badge badge-danger">Not available</span>
+            {% endif %}
+
             <p>
                 {{ product.shortDescription | raw }}
             </p>
-            <a href="{{ path('cart_add',{'id':product.id}) }}" class="btn btn-success btn-lg">
-                <i class="fas fa-shopping-cart"></i>
-                Add to Cart
-            </a>
+            {% if product.available %}
+                <a href="{{ path('cart_add',{'id':product.id}) }}" class="btn btn-success btn-lg">
+                    <i class="fas fa-shopping-cart"></i>
+                    Add to Cart
+                </a>
+            {% else %}
+                <a href="#" class="btn btn-danger btn-lg disabled">
+                    <i class="fas fa-shopping-cart"></i>
+                    Add to Cart
+                </a>
+            {% endif %}
+
         </div>
     </div>
 {% endblock %}

@@ -37,10 +37,21 @@ class Model
      */
     private $modelYears;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="model")
+     */
+    private $products;
+
 
     public function __construct()
     {
         $this->modelYears = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,7 +87,7 @@ class Model
 
     public function __toString()
     {
-        return $this->name;
+        return $this->getMake().'-'.$this->name;
     }
 
     /**
@@ -103,6 +114,48 @@ class Model
             // set the owning side to null (unless already changed)
             if ($modelYear->getModel() === $this) {
                 $modelYear->setModel(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setModel($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getModel() === $this) {
+                $product->setModel(null);
             }
         }
 
