@@ -31,16 +31,18 @@ class ModelYearEngineTransmission
      */
     private $transmission;
 
+
+
     /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="modelYearEngineTransmission")
+     * @ORM\OneToMany(targetEntity=PartModel::class, mappedBy="model", orphanRemoval=true)
      */
-    private $products;
+    private $partModels;
 
 
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->partModels = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -79,29 +81,29 @@ class ModelYearEngineTransmission
     }
 
     /**
-     * @return Collection|Product[]
+     * @return Collection|PartModel[]
      */
-    public function getProducts(): Collection
+    public function getPartModels(): Collection
     {
-        return $this->products;
+        return $this->partModels;
     }
 
-    public function addProduct(Product $product): self
+    public function addPartModel(PartModel $partModel): self
     {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->setModelYearEngineTransmission($this);
+        if (!$this->partModels->contains($partModel)) {
+            $this->partModels[] = $partModel;
+            $partModel->setModel($this);
         }
 
         return $this;
     }
 
-    public function removeProduct(Product $product): self
+    public function removePartModel(PartModel $partModel): self
     {
-        if ($this->products->removeElement($product)) {
+        if ($this->partModels->removeElement($partModel)) {
             // set the owning side to null (unless already changed)
-            if ($product->getModelYearEngineTransmission() === $this) {
-                $product->setModelYearEngineTransmission(null);
+            if ($partModel->getModel() === $this) {
+                $partModel->setModel(null);
             }
         }
 

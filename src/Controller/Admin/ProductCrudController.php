@@ -38,11 +38,6 @@ class ProductCrudController extends AbstractCrudController
             DateField::new('updatedAt')->onlyOnIndex(),
             AssociationField::new('subCategory'),
             BooleanField::new('available'),
-            AssociationField::new('make'),
-            AssociationField::new('model'),
-            AssociationField::new('modelYear'),
-            AssociationField::new('modelYearEngine'),
-            AssociationField::new('modelYearEngineTransmission'),
             MoneyField::new('price')->setCurrency('EUR'),
 
 

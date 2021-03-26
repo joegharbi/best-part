@@ -35,15 +35,10 @@ class ModelYear
      */
     private $modelYearEngines;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="modelYear")
-     */
-    private $products;
 
     public function __construct()
     {
         $this->modelYearEngines = new ArrayCollection();
-        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,33 +105,4 @@ class ModelYear
         return $this->model.'-'.$this->year;
     }
 
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
-
-    public function addProduct(Product $product): self
-    {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->setModelYear($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getModelYear() === $this) {
-                $product->setModelYear(null);
-            }
-        }
-
-        return $this;
-    }
 }
