@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Car;
 use App\Entity\Category;
 use App\Entity\Engine;
 use App\Entity\Make;
@@ -10,6 +11,7 @@ use App\Entity\Model;
 use App\Entity\ModelYear;
 use App\Entity\ModelYearEngine;
 use App\Entity\ModelYearEngineTransmission;
+use App\Entity\PartCar;
 use App\Entity\PartModel;
 use App\Entity\Product;
 use App\Entity\Purchase;
@@ -58,6 +60,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Category', 'fas fa-tags', Category::class);
         yield MenuItem::linkToCrud('SubCategory', 'fas fa-tags', SubCategory::class);
         yield MenuItem::linkToCrud('Product', 'fas fa-tags', Product::class);
+        yield MenuItem::linkToCrud('Part Model', 'fas fa-tags', PartCar::class);
         yield MenuItem::linkToCrud('Material Master', 'fas fa-tags', MaterialMaster::class);
 
         yield  MenuItem::section('Finance');
@@ -65,6 +68,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Purchase Item', 'fas fa-list', PurchaseItem::class);
 
         yield MenuItem::section('Make, Model and Year');
+        yield MenuItem::linkToCrud('Car', 'fas fa-list', Car::class);
+
+
 
         yield  MenuItem::section();
         yield MenuItem::subMenu('Other','fas fa-house-user')->setSubItems([

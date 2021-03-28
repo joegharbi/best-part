@@ -167,4 +167,17 @@ class MaterialMaster
 
         return $this;
     }
+
+    public function __toString()
+    {
+        $mm='';
+
+        $this->make ? $mm= $this->make : null;
+        $this->model ? $mm= $this->model : null;
+        $this->engine ? $mm= $this->engine : null;
+        $this->year ? $mm=strval($this->year)  : null;
+        $this->transmission ? $mm= $this->transmission : null;
+
+        return $mm;
+    }
 }
