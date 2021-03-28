@@ -136,4 +136,10 @@ class Car
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->model.'-'.$this->year.'-'.$this->engine.'-'.$this->transmission;
+    }
+
 }

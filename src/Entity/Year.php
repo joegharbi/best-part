@@ -19,10 +19,7 @@ class Year
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $year;
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -33,6 +30,11 @@ class Year
      * @ORM\OneToMany(targetEntity=Car::class, mappedBy="year", orphanRemoval=true)
      */
     private $cars;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $year;
 
     public function __construct()
     {
@@ -45,23 +47,6 @@ class Year
         return $this->id;
     }
 
-    public function getYear(): ?string
-    {
-        return $this->year;
-    }
-
-    public function setYear(string $year): self
-    {
-        $this->year = $year;
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->year;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -72,6 +57,11 @@ class Year
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+         return strval($this->year);
     }
 
     /**
@@ -100,6 +90,18 @@ class Year
                 $car->setYear(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(int $year): self
+    {
+        $this->year = $year;
 
         return $this;
     }
