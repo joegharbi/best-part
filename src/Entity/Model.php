@@ -27,25 +27,25 @@ class Model
 
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Car::class, mappedBy="model", orphanRemoval=true)
+     */
+    private $cars;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Make::class, inversedBy="models")
      * @ORM\JoinColumn(nullable=false)
      */
     private $make;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ModelYear::class, mappedBy="model", orphanRemoval=true)
-     */
-    private $modelYears;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $slug;
-
 
     public function __construct()
     {
-        $this->modelYears = new ArrayCollection();
+        $this->cars = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -66,52 +66,9 @@ class Model
     }
 
 
-    public function getMake(): ?Make
-    {
-        return $this->make;
-    }
-
-    public function setMake(?Make $make): self
-    {
-        $this->make = $make;
-
-        return $this;
-    }
-
-
     public function __toString()
     {
         return $this->getMake().'-'.$this->name;
-    }
-
-    /**
-     * @return Collection|ModelYear[]
-     */
-    public function getModelYears(): Collection
-    {
-        return $this->modelYears;
-    }
-
-    public function addModelYear(ModelYear $modelYear): self
-    {
-        if (!$this->modelYears->contains($modelYear)) {
-            $this->modelYears[] = $modelYear;
-            $modelYear->setModel($this);
-        }
-
-        return $this;
-    }
-
-    public function removeModelYear(ModelYear $modelYear): self
-    {
-        if ($this->modelYears->removeElement($modelYear)) {
-            // set the owning side to null (unless already changed)
-            if ($modelYear->getModel() === $this) {
-                $modelYear->setModel(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getSlug(): ?string
@@ -122,6 +79,48 @@ class Model
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Car[]
+     */
+    public function getCars(): Collection
+    {
+        return $this->cars;
+    }
+
+    public function addCar(Car $car): self
+    {
+        if (!$this->cars->contains($car)) {
+            $this->cars[] = $car;
+            $car->setModel($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCar(Car $car): self
+    {
+        if ($this->cars->removeElement($car)) {
+            // set the owning side to null (unless already changed)
+            if ($car->getModel() === $this) {
+                $car->setModel(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMake(): ?Make
+    {
+        return $this->make;
+    }
+
+    public function setMake(?Make $make): self
+    {
+        $this->make = $make;
 
         return $this;
     }

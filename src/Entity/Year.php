@@ -25,18 +25,18 @@ class Year
     private $year;
 
     /**
-     * @ORM\OneToMany(targetEntity=ModelYear::class, mappedBy="year", orphanRemoval=true)
-     */
-    private $modelYears;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Car::class, mappedBy="year", orphanRemoval=true)
+     */
+    private $cars;
+
     public function __construct()
     {
-        $this->modelYears = new ArrayCollection();
+        $this->cars = new ArrayCollection();
     }
 
 
@@ -62,36 +62,6 @@ class Year
         return $this->year;
     }
 
-    /**
-     * @return Collection|ModelYear[]
-     */
-    public function getModelYears(): Collection
-    {
-        return $this->modelYears;
-    }
-
-    public function addModelYear(ModelYear $modelYear): self
-    {
-        if (!$this->modelYears->contains($modelYear)) {
-            $this->modelYears[] = $modelYear;
-            $modelYear->setYear($this);
-        }
-
-        return $this;
-    }
-
-    public function removeModelYear(ModelYear $modelYear): self
-    {
-        if ($this->modelYears->removeElement($modelYear)) {
-            // set the owning side to null (unless already changed)
-            if ($modelYear->getYear() === $this) {
-                $modelYear->setYear(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -100,6 +70,36 @@ class Year
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Car[]
+     */
+    public function getCars(): Collection
+    {
+        return $this->cars;
+    }
+
+    public function addCar(Car $car): self
+    {
+        if (!$this->cars->contains($car)) {
+            $this->cars[] = $car;
+            $car->setYear($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCar(Car $car): self
+    {
+        if ($this->cars->removeElement($car)) {
+            // set the owning side to null (unless already changed)
+            if ($car->getYear() === $this) {
+                $car->setYear(null);
+            }
+        }
 
         return $this;
     }

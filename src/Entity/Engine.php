@@ -25,18 +25,18 @@ class Engine
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=ModelYearEngine::class, mappedBy="engine", orphanRemoval=true)
-     */
-    private $modelYearEngines;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Car::class, mappedBy="engine", orphanRemoval=true)
+     */
+    private $cars;
+
     public function __construct()
     {
-        $this->modelYearEngines = new ArrayCollection();
+        $this->cars = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -56,36 +56,6 @@ class Engine
         return $this;
     }
 
-    /**
-     * @return Collection|ModelYearEngine[]
-     */
-    public function getModelYearEngines(): Collection
-    {
-        return $this->modelYearEngines;
-    }
-
-    public function addModelYearEngine(ModelYearEngine $modelYearEngine): self
-    {
-        if (!$this->modelYearEngines->contains($modelYearEngine)) {
-            $this->modelYearEngines[] = $modelYearEngine;
-            $modelYearEngine->setEngine($this);
-        }
-
-        return $this;
-    }
-
-    public function removeModelYearEngine(ModelYearEngine $modelYearEngine): self
-    {
-        if ($this->modelYearEngines->removeElement($modelYearEngine)) {
-            // set the owning side to null (unless already changed)
-            if ($modelYearEngine->getEngine() === $this) {
-                $modelYearEngine->setEngine(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function __toString()
     {
         return $this->name;
@@ -99,6 +69,36 @@ class Engine
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Car[]
+     */
+    public function getCars(): Collection
+    {
+        return $this->cars;
+    }
+
+    public function addCar(Car $car): self
+    {
+        if (!$this->cars->contains($car)) {
+            $this->cars[] = $car;
+            $car->setEngine($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCar(Car $car): self
+    {
+        if ($this->cars->removeElement($car)) {
+            // set the owning side to null (unless already changed)
+            if ($car->getEngine() === $this) {
+                $car->setEngine(null);
+            }
+        }
 
         return $this;
     }

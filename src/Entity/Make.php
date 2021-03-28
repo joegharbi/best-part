@@ -24,15 +24,17 @@ class Make
      */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Model::class, mappedBy="make", orphanRemoval=true)
-     */
-    private $models;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Model::class, mappedBy="make", orphanRemoval=true)
+     */
+    private $models;
+
 
     public function __construct()
     {
@@ -52,6 +54,23 @@ class Make
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
@@ -82,23 +101,6 @@ class Make
                 $model->setMake(null);
             }
         }
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->name;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
 
         return $this;
     }

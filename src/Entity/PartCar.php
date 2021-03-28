@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\PartModelRepository;
+use App\Repository\PartCarRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=PartModelRepository::class)
+ * @ORM\Entity(repositoryClass=PartCarRepository::class)
  */
-class PartModel
+class PartCar
 {
     /**
      * @ORM\Id
@@ -18,16 +18,16 @@ class PartModel
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="partModels")
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="partCars")
      * @ORM\JoinColumn(nullable=false)
      */
     private $part;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ModelYearEngineTransmission::class, inversedBy="partModels")
+     * @ORM\ManyToOne(targetEntity=Car::class, inversedBy="partCars")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $model;
+    private $car;
 
     public function getId(): ?int
     {
@@ -46,20 +46,15 @@ class PartModel
         return $this;
     }
 
-    public function getModel(): ?ModelYearEngineTransmission
+    public function getCar(): ?Car
     {
-        return $this->model;
+        return $this->car;
     }
 
-    public function setModel(?ModelYearEngineTransmission $model): self
+    public function setCar(?Car $car): self
     {
-        $this->model = $model;
+        $this->car = $car;
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->getModel().$this->getPart();
     }
 }
