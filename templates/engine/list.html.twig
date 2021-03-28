@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    Engines for year {{ year.year }}
+{% endblock %}
+
+{% block body %}
+
+    <h2>List of engines for year {{ year.year }}</h2>
+
+    {% for e in engine %}
+        {{ e.engine.name }}
+{#        <p><a href="{{ path('engine_list',{'slug':m.slug}) }}">{{ m.name }}</a></p>#}
+    {% endfor %}
+
+{% endblock %}

@@ -10,7 +10,7 @@
    <h2>List of years for make: {{ model.name}}</h2>
 
     {% for y in modelYear  %}
-        <p><a href="#">{{ y.year }}</a></p>
+        <p><a href="{{ path('engine_list', {'slug': y.year}) }}">{{ y.year }}</a></p>
     {% endfor %}
 
 {% endblock %}

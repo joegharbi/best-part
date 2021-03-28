@@ -57,4 +57,9 @@ class PartModel
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getModel().$this->getPart();
+    }
 }
