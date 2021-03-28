@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    Makes
+{% endblock %}
+{% block body %}
+    <h2>List of Makes available</h2>
+
+    {% for c in car %}
+        <p>{{ c.make }}</p>
+    {% endfor %}
+{% endblock %}

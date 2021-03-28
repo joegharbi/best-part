@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    Makes
+{% endblock %}
+
+{% block body %}
+
+    {% for m in make %}
+        <p>{{ m }}</p>
+    {% endfor %}
+
+{% endblock %}
