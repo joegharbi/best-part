@@ -103,11 +103,11 @@ class Product
      */
     private $available;
 
-
     /**
-     * @ORM\OneToMany(targetEntity=PartModel::class, mappedBy="part", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=PartCar::class, mappedBy="part", orphanRemoval=true)
      */
-    private $partModels;
+    private $partCars;
+
 
 
     public function getUpdatedAt(): ?\DateTimeInterface
@@ -127,7 +127,7 @@ class Product
     public function __construct()
     {
         $this->purchaseItems = new ArrayCollection();
-        $this->partModels = new ArrayCollection();
+        $this->partCars = new ArrayCollection();
     }
 
     /**
@@ -267,32 +267,34 @@ class Product
     }
 
     /**
-     * @return Collection|PartModel[]
+     * @return Collection|PartCar[]
      */
-    public function getPartModels(): Collection
+    public function getPartCars(): Collection
     {
-        return $this->partModels;
+        return $this->partCars;
     }
 
-    public function addPartModel(PartModel $partModel): self
+    public function addPartCar(PartCar $partCar): self
     {
-        if (!$this->partModels->contains($partModel)) {
-            $this->partModels[] = $partModel;
-            $partModel->setPart($this);
+        if (!$this->partCars->contains($partCar)) {
+            $this->partCars[] = $partCar;
+            $partCar->setPart($this);
         }
 
         return $this;
     }
 
-    public function removePartModel(PartModel $partModel): self
+    public function removePartCar(PartCar $partCar): self
     {
-        if ($this->partModels->removeElement($partModel)) {
+        if ($this->partCars->removeElement($partCar)) {
             // set the owning side to null (unless already changed)
-            if ($partModel->getPart() === $this) {
-                $partModel->setPart(null);
+            if ($partCar->getPart() === $this) {
+                $partCar->setPart(null);
             }
         }
 
         return $this;
     }
+
+
 }
