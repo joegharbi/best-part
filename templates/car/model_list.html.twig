@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    List of years for
+{% endblock %}
+
+{% block body %}
+
+
+   <h2>List of years for make: {{ make}}</h2>
+
+    {% for m in model  %}
+        <p><a href="{{ path('car', {'slug': m.slug}) }}">{{ m.name}}</a></p>
+    {% endfor %}
+
+{% endblock %}
