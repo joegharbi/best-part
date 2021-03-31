@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Model;
 use App\Entity\Year;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,6 +20,18 @@ class YearRepository extends ServiceEntityRepository
         parent::__construct($registry, Year::class);
     }
 
+
+
+    public function getYearByModel(Model $model)
+    {
+
+        $qb= $this->createQueryBuilder('y');
+        $qb
+            ->innerJoin('y.cars','c')
+            ->where('c.model = :_model')
+            ->setParameter('_model',$model);
+        return $qb->getQuery()->getResult();
+    }
     // /**
     //  * @return Year[] Returns an array of Year objects
     //  */

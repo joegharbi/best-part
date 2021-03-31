@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Car;
+use App\Entity\PartCar;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Types\ArrayType;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,6 +21,18 @@ class ProductRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Product::class);
     }
+
+    public function getProductByPartCar(PartCar $partCar)
+    {
+
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->innerJoin('p.partCars','partCars')
+            ->where('partCars = :_pc')
+            ->setParameter('_pc', $partCar);
+        return $qb->getQuery()->getResult();
+    }
+
 
     // /**
     //  * @return Product[] Returns an array of Product objects

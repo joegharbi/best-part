@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Engine;
+use App\Entity\Model;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,18 @@ class EngineRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Engine::class);
+    }
+
+
+    public function getEngineByModel(Model $model)
+    {
+
+        $qb= $this->createQueryBuilder('e');
+        $qb
+            ->innerJoin('e.cars','c')
+            ->where('c.model = :_model')
+            ->setParameter('_model',$model);
+        return $qb->getQuery()->getResult();
     }
 
     // /**

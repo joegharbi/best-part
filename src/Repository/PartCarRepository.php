@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Car;
 use App\Entity\PartCar;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +18,16 @@ class PartCarRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, PartCar::class);
+    }
+
+    public function getPartListByCar(Car $car)
+    {
+
+        $qb = $this->createQueryBuilder('pc');
+        $qb
+            ->where('pc.car = :_car')
+            ->setParameter('_car', $car);
+        return $qb->getQuery()->getResult();
     }
 
     // /**

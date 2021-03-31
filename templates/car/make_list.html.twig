@@ -6,7 +6,7 @@
     <h2>List of Make</h2>
     {% for  m in make  %}
 
-        <p><a href="{{ path('car_model',{'slug':m.slug}) }}">{{ m.name }}</a></p>
+        <p><a href="{{ path('car_list',{'slug':m.slug}) }}">{{ m.name }}</a></p>
 
     {% endfor %}
 {% endblock %}

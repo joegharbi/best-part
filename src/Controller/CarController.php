@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Car;
 use App\Form\CarType;
+use App\Repository\CarRepository;
 use App\Repository\MakeRepository;
 use App\Repository\ModelRepository;
-use App\Repository\ModelYearRepository;
+use App\Repository\PartCarRepository;
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,88 +15,106 @@ use Symfony\Component\Routing\Annotation\Route;
 class CarController extends AbstractController
 {
 
+    /**
+     * @var MakeRepository
+     */
+    private $makeRepository;
+    /**
+     * @var CarRepository
+     */
+    private $carRepository;
+    /**
+     * @var ModelRepository
+     */
+    private $modelRepository;
+    /**
+     * @var PartCarRepository
+     */
+    private $partCarRepository;
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    public function __construct(ProductRepository $productRepository,PartCarRepository $partCarRepository,MakeRepository $makeRepository, CarRepository $carRepository, ModelRepository $modelRepository)
+    {
+
+        $this->makeRepository = $makeRepository;
+        $this->carRepository = $carRepository;
+        $this->modelRepository = $modelRepository;
+        $this->partCarRepository = $partCarRepository;
+        $this->productRepository = $productRepository;
+    }
 
     /**
      * @Route("/make",name="car_make")
      */
-    public function make(MakeRepository $makeRepository){
-
-        $make=$makeRepository->findAll();
-
-        if (!$make){
+    public function make()
+    {
+        $make = $this->makeRepository->findAll();
+        if (!$make) {
             throw $this->createNotFoundException('There is no make');
         }
-
-        return $this->render('car/make_list.html.twig',[
-            'make'=>$make
+        return $this->render('car/make_list.html.twig', [
+            'make' => $make
         ]);
-
     }
 
     /**
-     * @Route("/make/{slug}",name="car_model")
+     * @Route("/make/{slug}",name="car_list")
      */
-    public function model($slug,MakeRepository $makeRepository,ModelRepository $modelRepository)
+    public function list($slug)
     {
-        $make = $makeRepository->findOneBy(['slug' => $slug]);
-
-        $model = $modelRepository->findBy(['make' => $make]);
-
+        $make = $this->makeRepository->findBy(['slug' => $slug]);
+        $model = $this->modelRepository->findBy(['make' => $make]);
         if (!$model) {
             throw $this->createNotFoundException('There is no models yet');
         }
         return $this->render('car/model_list.html.twig', [
-
-            'model' => $model,
-            'make' => $make
-
+            'model' => $model
         ]);
-
     }
+
     /**
      * @Route("/make/model/{slug}",name="car")
      */
-    public function car($slug,Request $request,ModelRepository $modelRepository)
+    public function car($slug, Request $request)
     {
-        $car=new Car();
-        $model = $modelRepository->findOneBy(['slug' => $slug]);
+        $model = $this->modelRepository->findOneBy(['slug' => $slug]);
 
-        $form=$this->createForm(CarType::class,$car);
-
+        $form = $this->createForm(CarType::class, ['model' => $model]);
         $formView = $form->createView();
 
         $form->handleRequest($request);
-        if ($form->isSubmitted()&&$form->isValid()){
-            dd($form->getName());
-        }
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $car = $this->carRepository->findOneBy(['model' => $model, 'transmission' => $data['transmission'],
+                'year' => $data['year'],
+                'engine' => $data['engine']]);
+            if (!$car) {
+                throw $this->createNotFoundException('There is no car as you selected yet');
+            }
+            return $this->redirectToRoute('car_product', ['id' => $car->getId()]);
+        }
         return $this->render('car/list.html.twig',
             [
                 'formView' => $formView,
-                'model'=>$model
             ]);
     }
 
+    /**
+     * @Route("/make/model/car/{id}", name="car_product")
+     */
+    public function product($id)
+    {
+        $car = $this->carRepository->find($id);
+        $parts=$this->partCarRepository->getPartListByCar($car);
 
+        $product=$this->productRepository->getProductByPartCar($parts[0]);
 
-
-
-
-//    /**
-//     * @Route("/make/{slug}",name="year_list")
-//     */
-//    public function list($slug, ModelRepository $modelRepository)
-//    {
-//        $model = $modelRepository->findOneBy(['slug'=>$slug]);
-//        if (!$modelYear){
-//            throw $this->createNotFoundException('There is no year yet');
-//        }
-//        return $this->render('model_list.html.twig',[
-//
-//            'modelYear'=>$modelYear,
-//            'model'=>$model
-//
-//        ]);
-//
-//    }
+        return $this->render('car/part_list.html.twig',[
+            'product'=>$product
+        ]);
+    }
 }
