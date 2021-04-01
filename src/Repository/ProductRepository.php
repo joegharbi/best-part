@@ -22,7 +22,7 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-    public function getProductByPartCar(PartCar $partCar)
+    public function getProductByPartCar($partCar)
     {
 
         $qb = $this->createQueryBuilder('p');
@@ -30,6 +30,17 @@ class ProductRepository extends ServiceEntityRepository
             ->innerJoin('p.partCars','partCars')
             ->where('partCars = :_pc')
             ->setParameter('_pc', $partCar);
+        return $qb->getQuery()->getResult();
+    }
+   public function getProductByCarId(int $carId)
+    {
+
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->innerJoin('p.partCars','partCars')
+            ->innerJoin('partCars.car','car')
+            ->where('car.id = :_id')
+            ->setParameter('_id', $carId);
         return $qb->getQuery()->getResult();
     }
 

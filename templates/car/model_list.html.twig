@@ -7,7 +7,7 @@
 {% block body %}
 
 
-   <h2>List of years for make: </h2>
+   <h2>Select your Model for {{ make }}</h2>
 
 
     {% for  m in model  %}
@@ -15,13 +15,5 @@
         <p><a href="{{ path('car', {'slug': m.slug}) }}">{{ m.name }}</a></p>
 
     {% endfor %}
-
-{#    {{ form_start(formView) }}#}
-
-{#    {{ form_widget(formView) }}#}
-{#    <button class="btn submit btn-success">#}
-{#        Search#}
-{#    </button>#}
-{#    {{ form_end(formView) }}#}
 
 {% endblock %}

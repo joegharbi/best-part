@@ -99,8 +99,6 @@ class ProductController extends AbstractController
                 'slug' => $product->getSlug()
 
             ]);
-//            return $this->render('product/show.html.twig', [
-//                'product'=>$product]);
         }
         $formView = $form->createView();
 
@@ -131,8 +129,6 @@ class ProductController extends AbstractController
         }
 
         $formView = $form->createView();
-
-
         return $this->render('product/create.html.twig', ['formView' => $formView]);
     }
 }

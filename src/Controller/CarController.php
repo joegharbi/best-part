@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Form\CarType;
 use App\Repository\CarRepository;
 use App\Repository\MakeRepository;
@@ -65,13 +66,14 @@ class CarController extends AbstractController
      */
     public function list($slug)
     {
-        $make = $this->makeRepository->findBy(['slug' => $slug]);
+        $make = $this->makeRepository->findOneBy(['slug' => $slug]);
         $model = $this->modelRepository->findBy(['make' => $make]);
         if (!$model) {
             throw $this->createNotFoundException('There is no models yet');
         }
         return $this->render('car/model_list.html.twig', [
-            'model' => $model
+            'model' => $model,
+            'make'=>$make
         ]);
     }
 
@@ -108,13 +110,11 @@ class CarController extends AbstractController
      */
     public function product($id)
     {
-        $car = $this->carRepository->find($id);
-        $parts=$this->partCarRepository->getPartListByCar($car);
-
-        $product=$this->productRepository->getProductByPartCar($parts[0]);
+        $product=$this->productRepository->getProductByCarId($id);
 
         return $this->render('car/part_list.html.twig',[
             'product'=>$product
         ]);
+
     }
 }
