@@ -12,12 +12,17 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210328164125 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE model ADD make_id INT NOT NULL');
@@ -25,7 +30,7 @@ final class Version20210328164125 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_D79572D9CFBF73EB ON model (make_id)');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE model DROP FOREIGN KEY FK_D79572D9CFBF73EB');

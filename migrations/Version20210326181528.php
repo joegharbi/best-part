@@ -12,12 +12,17 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210326181528 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE product DROP FOREIGN KEY FK_D34A04AD20529756');
@@ -33,7 +38,7 @@ final class Version20210326181528 extends AbstractMigration
         $this->addSql('ALTER TABLE product DROP model_year_engine_transmission_id, DROP model_year_engine_id, DROP model_year_id, DROP model_id, DROP make_id');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE product ADD model_year_engine_transmission_id INT DEFAULT NULL, ADD model_year_engine_id INT DEFAULT NULL, ADD model_year_id INT DEFAULT NULL, ADD model_id INT DEFAULT NULL, ADD make_id INT DEFAULT NULL');

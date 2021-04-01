@@ -12,12 +12,17 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210324215353 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE part_model DROP FOREIGN KEY FK_44E6253A7975B7E7');
@@ -25,7 +30,7 @@ final class Version20210324215353 extends AbstractMigration
         $this->addSql('ALTER TABLE part_model DROP model_id');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE part_model ADD model_id INT NOT NULL');

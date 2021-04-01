@@ -12,12 +12,17 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210328160925 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE model_year_engine DROP FOREIGN KEY FK_9EBE0A3820529756');
@@ -32,7 +37,7 @@ final class Version20210328160925 extends AbstractMigration
         $this->addSql('ALTER TABLE model DROP make_id');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE model_year (id INT AUTO_INCREMENT NOT NULL, model_id INT DEFAULT NULL, year_id INT NOT NULL, INDEX IDX_96D55FD040C1FEA7 (year_id), INDEX IDX_96D55FD07975B7E7 (model_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');

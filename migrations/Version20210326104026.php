@@ -12,12 +12,17 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210326104026 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE product ADD model_year_engine_transmission_id INT DEFAULT NULL, ADD model_year_engine_id INT DEFAULT NULL, ADD model_year_id INT DEFAULT NULL, ADD model_id INT DEFAULT NULL');
@@ -31,7 +36,7 @@ final class Version20210326104026 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_D34A04AD7975B7E7 ON product (model_id)');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE product DROP FOREIGN KEY FK_D34A04ADEDB8B4E4');

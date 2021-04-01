@@ -12,6 +12,10 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210309150042 extends AbstractMigration
 {
+    public function isTransactional(): bool
+    {
+        return false;
+    }
     public function getDescription() : string
     {
         return '';

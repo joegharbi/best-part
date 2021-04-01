@@ -28,4 +28,8 @@ final class Version20210302181232 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE product DROP slug');
     }
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }
