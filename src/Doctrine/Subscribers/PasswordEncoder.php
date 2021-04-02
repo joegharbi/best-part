@@ -53,6 +53,7 @@ class PasswordEncoder implements EventSubscriberInterface
             $entity->setRoles(['ROLE_ADMIN']);
             $entity->setPassword($this->encoder->encodePassword($this->security->getUser(),'password'));
             $entity->setCreatedAt(new \DateTime());
+
         }
     }
     public function setUpdatePassword(BeforeEntityUpdatedEvent $event)
