@@ -71,7 +71,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Year','fas fa-tags',Year::class);
         yield MenuItem::linkToCrud('Engine','fas fa-tags',Engine::class);
         yield MenuItem::linkToCrud('Transmission','fas fa-tags',Transmission::class);
-        yield MenuItem::linkToCrud('Car','fas fa-tags',Car::class);
+        yield MenuItem::linkToCrud('VIN','fas fa-tags',Car::class);
         yield  MenuItem::section();
         yield MenuItem::subMenu('Other','fas fa-house-user')->setSubItems([
             MenuItem::linkToRoute('Go to website', 'fas fa-list','homepage'),

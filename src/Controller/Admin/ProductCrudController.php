@@ -36,7 +36,7 @@ class ProductCrudController extends AbstractCrudController
             ->setFormTypeOption('allow_delete',false),
             ImageField::new('mainPicture')->setBasePath('/images/mainPictures')->hideOnForm(),
             DateField::new('updatedAt')->onlyOnIndex(),
-            AssociationField::new('subCategory'),
+            AssociationField::new('subCategory')->setRequired(true),
             BooleanField::new('available'),
             MoneyField::new('price')->setCurrency('EUR'),
 
