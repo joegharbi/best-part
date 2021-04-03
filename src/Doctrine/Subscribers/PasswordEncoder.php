@@ -52,8 +52,6 @@ class PasswordEncoder implements EventSubscriberInterface
         if($entity instanceof User && (substr_count('ROLE_ADMIN',$role))===0){
             $entity->setRoles(['ROLE_ADMIN']);
             $entity->setPassword($this->encoder->encodePassword($this->security->getUser(),'password'));
-            $entity->setCreatedAt(new \DateTime());
-
         }
     }
     public function setUpdatePassword(BeforeEntityUpdatedEvent $event)
@@ -61,7 +59,7 @@ class PasswordEncoder implements EventSubscriberInterface
         $entity=$event->getEntityInstance();
 
         if($entity instanceof User ){
-            $entity->setUpdatedAt(new \DateTime());
+            $entity->setUpdatedAt();
             $entity->setPassword($this->encoder->encodePassword($this->security->getUser(),$this->security->getUser()->getPassword()));
         }
     }

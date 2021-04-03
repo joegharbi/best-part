@@ -43,8 +43,6 @@ class AppFixtures extends Fixture
         $hash = $this->encoder->encodePassword($admin, "password");
         $admin->setEmail("admin@gmail.com")
             ->setPassword($hash)
-            ->setCreatedAt($faker->dateTimeBetween('-6 months'))
-            ->setUpdatedAt($faker->dateTimeBetween('-5 months'))
             ->setFullName($faker->name())
             ->setRoles(['ROLE_ADMIN']);
         $manager->persist($admin);
@@ -54,8 +52,6 @@ class AppFixtures extends Fixture
             $user = new User();
             $hash = $this->encoder->encodePassword($user, "password");
             $user->setEmail("user$u@gmail.com")
-                ->setCreatedAt($faker->dateTimeBetween('-6 months'))
-                ->setUpdatedAt($faker->dateTimeBetween('-5 months'))
                 ->setFullName($faker->name())
                 ->setPassword($hash);
 
